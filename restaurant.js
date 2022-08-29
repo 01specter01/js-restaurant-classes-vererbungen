@@ -1,94 +1,105 @@
+// Restaurant
+// + Speisekarte
+// + geöffnet/geschlossen
+// + Kasse
+// - Personal bezahlen
 class Restaurant {
-    constructor(speisekarte, kasse) {
+    constructor(speisekarte, kassenbestand) {
         this.speisekarte = speisekarte;
-        this.kasse = kasse;
+        this.kasse = kassenbestand;
         this.geoeffnet = false;
     }
+
     personalBezahlen() {
-        //..
+        // ...
     }
+
     oeffnen() {
         this.geoeffnet = true;
     }
+
     schliessen() {
         this.geoeffnet = false;
     }
+
+    // DEBUG --------
     status() {
-        console.log("geoeffnet?", this.geoeffnet);
+        console.log("geöffnet?", this.geoeffnet);
     }
 }
+
 const restaurant = new Restaurant([], 0);
-restaurant.oeffnen();
-restaurant.status();
 
-// const leoRestaurant = new Restaurant();
-// console.log(leoRestaurant);
-// const speisekarte = {
-//     fischgericht: "14€",
-//     fleischgericht: "16€",
-//     veganesessen: "10€",
-//     alkoholischesgetränk: "8€",
-//     unalkhoolischegetränk: "7€",
-// };
-// class Personal {
-//     constructor(gehalt, arbeitsstunden, urlaub) {
-//         this.gehalt = gehalt;
-//         this.arbeitsstunden = arbeitsstunden;
-//         this.urlaub = urlaub;
-//     }
-// }
-// const leoRestaurantPersonal = new Personal("96€", 8, 30);
-// console.log(leoRestaurantPersonal);
+// Personal
+// + Anfangswert ausgezahlter Lohn: 0€
+// - Lohn erhalten
+class Personal {
+    constructor() {
+        this.lohn = 0;
+    }
 
-// class Kellner extends Personal {
-//     constructor(bestellungenaufnehmen, gehalt, arbeitsstunden, urlaub) {
-//         super(gehalt, arbeitsstunden, urlaub);
-//         this.bestellungenaufnehmen = bestellungenaufnehmen;
-//     }
-// }
+    lohnErhalten(lohn) {
+        this.lohn += lohn;
+    }
+}
 
-// const leoRestaurantKellner = new Kellner("30 täglich", "96€", 8, 30);
-// console.log(leoRestaurantKellner);
+const personal = new Personal();
 
-// class Koch extends Personal {
-//     constructor(gehalt, arbeitsstunden, urlaub, kochen, bestellungenaufnehmen) {
-//         super(gehalt, arbeitsstunden, urlaub, bestellungenaufnehmen);
-//         this.kochen = kochen;
-//     }
-// }
-// const leoRestaurantKoch = new Koch(
-//     "96€",
-//     8,
-//     30,
-//     "300 Gerichte täglich",
-//     "30mal täglich"
-// );
-// console.log(leoRestaurantKoch);
+// Kellner (erbt von Personal)
+// - Bestellung aufnehmen
+// - Bestellung weitergeben
+// - Bestellung ausgeben
+// - abkassieren
+class Kellner extends Personal {
+    bestellungAufnehmen(gericht) {
+        console.log("Bestellung aufgenommen:", gericht);
+        // ...
+    }
 
+    bestellungWeitergeben() {
+        // ...
+    }
+
+    bestellungAusgeben() {
+        // ...
+    }
+
+    abkassieren(gericht) {
+        console.log("Bestellung abgerechnet:", gericht);
+        // ...
+    }
+}
+
+// Koch (erbt von Personal)
+// - Bestellung erhalten
+// - Bestellung zubereiten
+
+// Gast
+// - bestellen
+// - bezahlen
 class Gast {
     constructor(kellner) {
         this.kellner = kellner;
     }
+
     bestellen(gericht) {
         this.gericht = gericht;
-        this.kellner.bestellungenaufnehmen(gericht);
+        this.kellner.bestellungAufnehmen(gericht);
     }
+
     bezahlen() {
         console.log(`zu bezahlen: ${this.gericht.preis}€`);
         this.kellner.abkassieren(this.gericht);
     }
 }
-// const leoRestaurantGäste = new Gäste(
-//     `${speisekarte.fischgericht.key} ,${speisekarte.alkoholischesgetränk}`
-// );
-// console.log(leoRestaurantGäste);
+
 const kellner = new Kellner();
+
 const gast1 = new Gast(kellner);
 const gast2 = new Gast(kellner);
 
-gast1.bestelllen({ name: "Pizza", preis: 10 });
-gast2.bestelllen({ name: "Pasta", preis: 8 });
+gast1.bestellen({ name: "Pizza", preis: 10 });
+gast2.bestellen({ name: "Pasta", preis: 8 });
 
 gast1.bezahlen();
-
 gast2.bezahlen();
