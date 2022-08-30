@@ -8,8 +8,9 @@ class Restaurant {
         this.speisekarte = speisekarte;
         this.kassenbestand = kassenbestand;
         this.time = new Date().getHours();
+        this.bestellungen = [];
     }
-
+    bestellungHinzuFügen() {}
     personalBezahlen() {}
     besucherZeiten() {
         if (this.time >= 12 && this.time <= 20) {
@@ -20,7 +21,13 @@ class Restaurant {
     }
 }
 
-const restaurant = new Restaurant([{ name: "Pizza", preis: 10 }], 0);
+const restaurant = new Restaurant(
+    [
+        { name: "Pizza", preis: 10 },
+        { name: "Pasta", preis: 15 },
+    ],
+    0
+);
 
 restaurant.besucherZeiten();
 class Bestellung {
@@ -98,10 +105,10 @@ console.log(koch);
 // Gast
 // - bestellen
 // - bezahlen
-class Gast extends Restaurant {
-    constructor(speisekarte, kassenbestand, kellner) {
-        super(speisekarte, kassenbestand);
+class Gast {
+    constructor(restaurant, kellner) {
         this.kellner = kellner;
+        this.restaurant = restaurant;
     }
 
     bestellen(gericht) {
@@ -118,12 +125,12 @@ class Gast extends Restaurant {
 
 const kellner = new Kellner({ gericht: "Pizza", lohn: 96 });
 
-const gast1 = new Gast("speisekarte", 0, "kellner");
+const gast1 = new Gast(restaurant, "kellner");
 
 kellner.bestellungAufnehmen();
 gast1.bestellen([
     { name: "Pizza", preis: 10 },
-    { name: "Pizza", preis: 10 },
+    { name: "Pasta", preis: 15 },
 ]);
 
 gast1.bezahlen();
