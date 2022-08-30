@@ -4,44 +4,23 @@
 // + Kasse
 // - Personal bezahlen
 class Restaurant {
-    constructor(speisekarte, kassenbestand, oeffnungszeiten) {
+    constructor(speisekarte, kassenbestand) {
         this.speisekarte = speisekarte;
         this.kasse = kassenbestand;
-        this.oeffnungszeiten = oeffnungszeiten;
-        this.geoeffnet = false;
         this.time = new Date().getHours();
     }
 
     personalBezahlen() {}
     besucherZeiten() {
-        if (this.time >= 11 && this.time <= 19) {
+        if (this.time >= 12 && this.time <= 20) {
             console.log(`Es ist ${this.time}Uhr, wir haben geoeffnet!`);
         } else {
             console.log(`Es ist ${this.time}Uhr, wir haben geschlossen!`);
         }
     }
-
-    oeffnen() {
-        this.geoeffnet = true;
-    }
-
-    schliessen() {
-        this.geoeffnet = false;
-    }
-
-    //DEBUG --------
-    status() {
-        console.log("geöffnet?", this.geoeffnet);
-    }
 }
 
 const restaurant = new Restaurant([], 0);
-
-restaurant.status();
-restaurant.oeffnen();
-restaurant.status();
-restaurant.schliessen();
-restaurant.status();
 restaurant.besucherZeiten();
 // Personal
 // + Anfangswert ausgezahlter Lohn: 0€
@@ -90,6 +69,7 @@ class Kellner extends Personal {
         // ...
     }
 }
+// kellner.bestellungAufnehmen();
 
 // Koch (erbt von Personal)
 // - Bestellung erhalten
