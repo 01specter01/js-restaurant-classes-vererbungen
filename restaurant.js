@@ -6,7 +6,7 @@
 class Restaurant {
     constructor(speisekarte, kassenbestand) {
         this.speisekarte = speisekarte;
-        this.kasse = kassenbestand;
+        this.kassenbestand = kassenbestand;
         this.time = new Date().getHours();
     }
 
@@ -20,8 +20,16 @@ class Restaurant {
     }
 }
 
-const restaurant = new Restaurant([], 0);
+const restaurant = new Restaurant([{ name: "Pizza", preis: 10 }], 0);
+
 restaurant.besucherZeiten();
+class Bestellung {
+    constructor() {
+        this.gericht;
+    }
+}
+console.log(restaurant);
+
 // Personal
 // + Anfangswert ausgezahlter Lohn: 0€
 // - Lohn erhalten
@@ -45,14 +53,16 @@ console.log(personal);
 // - Bestellung weitergeben
 // - Bestellung ausgeben
 // - abkassieren
+
 class Kellner extends Personal {
-    constructor(lohn, gericht) {
+    constructor(restaurant, lohn, gericht) {
         super(lohn);
+        this.restaurant = restaurant;
         this.gericht = gericht;
     }
 
     bestellungAufnehmen(gericht) {
-        console.log("Bestellung aufgenommen:", gericht);
+        console.log("Bestellung aufgenommen:", this.gericht);
         // ...
     }
 
@@ -70,7 +80,17 @@ class Kellner extends Personal {
     }
 }
 // kellner.bestellungAufnehmen();
-
+class Koch extends Personal {
+    constructor(restaurant, lohn, gericht) {
+        super(lohn);
+        this.restaurant = restaurant;
+        this.gericht = gericht;
+    }
+    bestellungErhalten() {}
+    bestellungZubereiten() {}
+}
+const koch = new Koch();
+console.log(koch);
 // Koch (erbt von Personal)
 // - Bestellung erhalten
 // - Bestellung zubereiten
@@ -78,29 +98,33 @@ class Kellner extends Personal {
 // Gast
 // - bestellen
 // - bezahlen
-class Gast {
-    constructor(kellner) {
+class Gast extends Restaurant {
+    constructor(speisekarte, kassenbestand, kellner) {
+        super(speisekarte, kassenbestand);
         this.kellner = kellner;
     }
 
     bestellen(gericht) {
         this.gericht = gericht;
-        this.kellner.bestellungAufnehmen(gericht);
     }
 
     bezahlen() {
         console.log(`zu bezahlen: ${this.gericht.preis}€`);
-        this.kellner.abkassieren(this.gericht);
+        for (let x = 0; x < this.gericht.length; x++) {
+            this.kassenbestand += this.gericht.preis[x];
+        }
     }
 }
 
 const kellner = new Kellner({ gericht: "Pizza", lohn: 96 });
 
-const gast1 = new Gast(kellner);
-const gast2 = new Gast(kellner);
+const gast1 = new Gast("speisekarte", 0, "kellner");
 
-gast1.bestellen({ name: "Pizza", preis: 10 });
-gast2.bestellen({ name: "Pasta", preis: 8 });
+kellner.bestellungAufnehmen();
+gast1.bestellen([
+    { name: "Pizza", preis: 10 },
+    { name: "Pizza", preis: 10 },
+]);
 
 gast1.bezahlen();
-gast2.bezahlen();
+console.log(restaurant);
